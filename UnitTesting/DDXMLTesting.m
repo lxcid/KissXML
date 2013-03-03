@@ -88,6 +88,7 @@ static DDAssertionHandler *ddAssertionHandler;
 	[self testNodesForXPath];
 	[self testNSXMLBugs];
 	[self testInsertChild];
+    [self testInitDocumentWithRootElement];
 	[self testElementSerialization];
 	[self testAttrWithColonInName];
 	[self testMemoryIssueDebugging];
@@ -1701,6 +1702,19 @@ static DDAssertionHandler *ddAssertionHandler;
 	NSAssert(nsException != nil, @"Failed CHECK 1");
 	NSAssert(ddException != nil, @"Failed test 6");	
 }}
+
++ (void)testInitDocumentWithRootElement { @autoreleasepool
+    {
+        NSLog(@"Starting %@...", NSStringFromSelector(_cmd));
+        
+        NSXMLElement *nsroot1 = [NSXMLElement elementWithName:@"rootElement"];
+        DDXMLElement *ddroot1 = [DDXMLElement elementWithName:@"rootElement"];
+        
+        NSXMLDocument *nsdoc = [[NSXMLDocument alloc] initWithRootElement:nsroot1];
+        DDXMLDocument *dddoc = [[DDXMLDocument alloc] initWithRootElement:ddroot1];
+        
+        NSAssert([[dddoc XMLString] isEqualToString:[nsdoc XMLString]], @"Failed test 1");
+    }}
 
 + (void)testElementSerialization { @autoreleasepool
 {
